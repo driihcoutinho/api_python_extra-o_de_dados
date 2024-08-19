@@ -1,0 +1,36 @@
+# api_python_extra-o_de_dados
+
+import requests
+import json
+from salesforce_marketingcloud import MarketingCloud
+
+# Configurações
+YOUR_EMAIL = 'seu_email@example.com'
+YOUR_PASSWORD = 'sua_senha'
+CLIENT_ID = 'seu_client_id'
+CLIENT_SECRET = 'seu_client_secret'
+SUBSCRIPTION_KEY = 'sua_subscription_key'
+DATA_EXTENSION_NAME = 'SuaDataExtension'
+
+# Autenticação no Marketing Cloud
+mc = MarketingCloud(YOUR_EMAIL, YOUR_PASSWORD, client_id=CLIENT_ID, client_secret=CLIENT_SECRET, subscription_key=SUBSCRIPTION_KEY)
+
+# Requisição à API do E-commerce (Exemplo com uma API fictícia)
+response = requests.get('https://api.seu-ecommerce.com/pedidos')
+data = json.loads(response.text)
+
+# Inserção dos dados na data extension
+for pedido in data['pedidos']:
+    nome = pedido['nome']
+    email = pedido['email']
+    id_cliente = pedido['id_cliente']
+    data_compra = pedido['data_compra']
+    id_produto = pedido['id_produto']
+
+    mc.data_extensions.insert(DATA_EXTENSION_NAME, {
+        'Nome': nome,
+        'Email': email,
+        'ID_do_Cliente': id_cliente,
+        'Data_da_Compra': data_compra,
+        'ID_do_Produto': id_produto
+    })
